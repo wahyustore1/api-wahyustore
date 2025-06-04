@@ -1,7 +1,5 @@
-const yt = require("yt-search")
-
 module.exports = function (app) {
-app.get('/search/youtube', async (req, res) => {
+app.get('/search/spotify', async (req, res) => {
         try {
             const { apikey } = req.query;
             if (!global.apikey.includes(apikey)) return res.json({ status: false, error: 'Apikey invalid' })
@@ -9,10 +7,10 @@ app.get('/search/youtube', async (req, res) => {
             if (!q) {
             return res.json({ status: false, error: 'Query is required' });
             }
-            const results = await yt(q);
+            const results = await global.fetchJson(`https://fastrestapis.fasturl.cloud/music/spotify?name=${q}`);
             res.status(200).json({
                 status: true,
-                result: results.all
+                result: results.result
             });
         } catch (error) {
             res.status(500).send(`Error: ${error.message}`);
